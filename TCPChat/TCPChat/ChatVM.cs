@@ -21,13 +21,18 @@ namespace TCPChat
         string message;
         TcpClient server;
         List<string> chatHistory;
-
+        public static Window1 reg;
+        public static string name { get; set; }
         public ChatVM()
         {
             chatHistory = new List<string>();
-            server = new TcpClient("192.168.88.167", 8888);
+            reg = new Window1();
+            reg.ShowDialog();
+
+            server = new TcpClient("127.0.0.1", 8888);
             Task listner = new Task(serverListner);
             listner.Start();
+            SendMessageToServer("<name>" + name);
         }
 
         void serverListner()
@@ -49,6 +54,7 @@ namespace TCPChat
             NetworkStream networkStream = server.GetStream();
             byte[] buffer = Encoding.UTF8.GetBytes(message);
             networkStream.Write(buffer, 0, buffer.Length);
+            Message = "";
         }
 
         public List<string> ChatHistory
@@ -69,9 +75,7 @@ namespace TCPChat
         {
             get
             {
-                string message1 = message;
-                 Message = "";
-                return new MyCommand((o) => { SendMessageToServer(message1); });
+                  return new MyCommand((o) => { SendMessageToServer(message); });
             }
         }
       

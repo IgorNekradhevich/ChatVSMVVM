@@ -10,34 +10,62 @@ namespace ChatServer
 {
     class Program
     {
-        static List<TcpClient> clients;
+        static List<ClientInfo> clients;
 
-        public static void ClientListener(TcpClient client)
+        public static void ClientListener(ClientInfo client)
         {
             byte[] buffer = new byte[255];
-            while (true)
+            bool isConnected = true;
+            while (isConnected)
             {
-                NetworkStream stream = client.GetStream();
-                stream.Read(buffer, 0, 255);
-                /***************************************************/
-                string message = Encoding.UTF8.GetString(buffer);
-                Console.WriteLine(message);
-                ////////////////////////////////////////////////////
-                foreach (TcpClient tcpClient in clients)
+                try
                 {
-                    NetworkStream writer = tcpClient.GetStream();
-                    writer.Write(buffer, 0, buffer.Length);
+                    NetworkStream stream = client.Client.GetStream();
+                    stream.Read(buffer, 0, 255);
+                    string message = Encoding.UTF8.GetString(buffer);
+
+                    if (message.IndexOf("<name>") == 0)
+                    {
+                        int index = clients.IndexOf(client);
+                        clients[index].Name = message.Remove(0, 6);
+                        client.Name = message.Remove(0, 6);
+
+                    }
+                    else
+                    { 
+                        message = client.Name + ":" + message;
+                        Console.WriteLine(message);
+                        buffer = new byte[255];
+                        buffer= Encoding.UTF8.GetBytes(message);
+                        foreach (ClientInfo tcpClient in clients)
+                        {
+                           
+                            
+                            NetworkStream writer = tcpClient.Client.GetStream();
+                            writer.Write(buffer, 0, buffer.Length);
+                        }
+
+                    }
+                } catch
+                {
+                    isConnected = false;
+                    Console.WriteLine(client.Name +" Ушел");
+                    clients.Remove(client);
+
                 }
             }
         }
         static void Main(string[] args)
         {
             TcpListener listener = new TcpListener(IPAddress.Any, 8888);
-            clients = new List<TcpClient>() ;
+            clients = new List<ClientInfo>() ;
             listener.Start();
+            int count = 0;
             while (true)
             {
-                clients.Add(listener.AcceptTcpClient());
+                count++;
+
+                clients.Add( new ClientInfo(count, listener.AcceptTcpClient()));
                 Console.WriteLine("О чудо у нас гость!");
                 Task task = new Task(()=> { ClientListener(clients[clients.Count - 1]); });
                 task.Start();

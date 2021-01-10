@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\PC\source\repos\TCPChat\TCPChat\obj\Debug\
+C:\Igor\Git\ChatVSMVVM\TCPChat\TCPChat\obj\Debug\
 TCPChat
 none
 false
 DEBUG;TRACE
-C:\Users\PC\source\repos\TCPChat\TCPChat\App.xaml
-11151548125
+C:\Igor\Git\ChatVSMVVM\TCPChat\TCPChat\App.xaml
+2462529049
 
-91502223295
+111970497349
 13-1505183044
-MainWindow.xaml;
+MainWindow.xaml;Window1.xaml;
 
-False
+True
 
