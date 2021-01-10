@@ -16,11 +16,7 @@ namespace TCPChat
             user.Connect(ip,port);
         }
 
-        public void SendMessage(string message)
-        {
-            NetworkStream networkStream = user.GetStream();
-            byte[] buffer = Encoding.UTF8.GetBytes(message);
-            networkStream.Write(buffer, 0, buffer.Length);
-        }
+        
+    
     }
 }

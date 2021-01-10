@@ -5,3 +5,10 @@ C:\Users\PC\source\repos\ChatServer\ChatServer\obj\Debug\ChatServer.csprojAssemb
 C:\Users\PC\source\repos\ChatServer\ChatServer\obj\Debug\ChatServer.csproj.CoreCompileInputs.cache
 C:\Users\PC\source\repos\ChatServer\ChatServer\obj\Debug\ChatServer.exe
 C:\Users\PC\source\repos\ChatServer\ChatServer\obj\Debug\ChatServer.pdb
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\bin\Debug\ChatServer.exe.config
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\bin\Debug\ChatServer.exe
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\bin\Debug\ChatServer.pdb
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\obj\Debug\ChatServer.csprojAssemblyReference.cache
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\obj\Debug\ChatServer.csproj.CoreCompileInputs.cache
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\obj\Debug\ChatServer.exe
+C:\Igor\Git\ChatVSMVVM\ChatServer\ChatServer\obj\Debug\ChatServer.pdb

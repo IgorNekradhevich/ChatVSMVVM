@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace TCPChat
 {
@@ -17,18 +19,39 @@ namespace TCPChat
         }
 
         string message;
+        TcpClient server;
+        List<string> chatHistory;
 
-
-        ChatM chat;
-        ObservableCollection<string> chatHistory;
         public ChatVM()
         {
-            chat = new ChatM("127.0.0.1", 8888);
-            chatHistory = new ObservableCollection<string>();
+            chatHistory = new List<string>();
+            server = new TcpClient("192.168.88.167", 8888);
+            Task listner = new Task(serverListner);
+            listner.Start();
         }
 
-      
-        public ObservableCollection<string> ChatHistory
+        void serverListner()
+        {
+            byte[] buffer = new byte[255];
+            while (true)
+            {
+                NetworkStream stream = server.GetStream();
+                stream.Read(buffer, 0, 255);
+                string message = Encoding.UTF8.GetString(buffer);
+                ChatHistory.Add(message);
+                ChatHistory = new List<string>(ChatHistory);
+                Console.WriteLine(message);
+            }
+        }
+
+        public void SendMessageToServer(string message)
+        {
+            NetworkStream networkStream = server.GetStream();
+            byte[] buffer = Encoding.UTF8.GetBytes(message);
+            networkStream.Write(buffer, 0, buffer.Length);
+        }
+
+        public List<string> ChatHistory
         {
             get
             {
@@ -44,10 +67,12 @@ namespace TCPChat
         }
         public MyCommand SendMessage
         {
-            
-        get {
-                return new MyCommand((o) => { chat.SendMessage(message); }); 
-            } 
+            get
+            {
+                string message1 = message;
+                 Message = "";
+                return new MyCommand((o) => { SendMessageToServer(message1); });
+            }
         }
       
         public string Message
@@ -58,7 +83,5 @@ namespace TCPChat
                 Changed("Message");
                 }
         }
-
-
     }
 }
