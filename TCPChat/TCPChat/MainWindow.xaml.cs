@@ -25,10 +25,7 @@ namespace TCPChat
         public MainWindow()
         {
             InitializeComponent();
-
-
-            // Connect to Server //
-            
+          
         }
     }
 }

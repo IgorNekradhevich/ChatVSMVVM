@@ -19,7 +19,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <ListBox ItemsSource="{Binding ChatHistory, UpdateSourceTrigger=PropertyChanged}"></ListBox>
-        <ListBox Grid.Column="1"></ListBox>
+        <ListBox ItemsSource="{Binding OnlineList, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1"></ListBox>
         <TextBox Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" FontSize="28"></TextBox>
         <Button Command="{Binding SendMessage, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1">Отправить</Button>
 

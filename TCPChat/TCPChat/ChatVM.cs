@@ -21,6 +21,7 @@ namespace TCPChat
         string message;
         TcpClient server;
         List<string> chatHistory;
+        List<string> onlineList;
         public static Window1 reg;
         public static string name { get; set; }
         public ChatVM()
@@ -35,22 +36,48 @@ namespace TCPChat
             SendMessageToServer("<name>" + name);
         }
 
+        public List<string> OnlineList
+        {
+            get
+            {
+                return onlineList;
+            }
+
+            set
+            {
+                onlineList = value;
+                Changed("OnlineList");
+            }
+
+        }
+
         void serverListner()
         {
             byte[] buffer = new byte[255];
             while (true)
             {
+                buffer = new byte[255];
                 NetworkStream stream = server.GetStream();
                 stream.Read(buffer, 0, 255);
                 string message = Encoding.UTF8.GetString(buffer);
-                ChatHistory.Add(message);
-                ChatHistory = new List<string>(ChatHistory);
-                Console.WriteLine(message);
+                if(message.IndexOf("<Online>")==0)
+                {
+                    message = message.Remove(0, 8);
+                    string[] names = message.Split('|');
+                    onlineList= names.ToList<string>();
+                    OnlineList = new List<string>(onlineList);
+                } else
+                {
+                    ChatHistory.Add(message);
+                    ChatHistory = new List<string>(ChatHistory);
+                    Console.WriteLine(message);
+                }
             }
         }
 
         public void SendMessageToServer(string message)
         {
+            message+="\0\0";
             NetworkStream networkStream = server.GetStream();
             byte[] buffer = Encoding.UTF8.GetBytes(message);
             networkStream.Write(buffer, 0, buffer.Length);
